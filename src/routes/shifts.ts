@@ -5,7 +5,7 @@ import { requireAuth } from "../middleware/requireAuth";
 const router = Router();
 const prisma = new PrismaClient();
 
-// ✅ إنشاء نوبة جديدة (محمية)
+//  إنشاء نوبة جديدة (محمية)
 router.post("/", requireAuth, async (req, res) => {
   try {
     const { guardName, date, startTime, endTime, location, phone } = req.body;
@@ -23,7 +23,7 @@ router.post("/", requireAuth, async (req, res) => {
         endTime,
         location,
         phone,
-        guardId: user.id, // ⬅️ يربط النوبة بصاحب الحساب
+        guardId: user.id, //  يربط النوبة بصاحب الحساب
       },
     });
 
@@ -37,7 +37,7 @@ router.post("/", requireAuth, async (req, res) => {
   }
 });
 
-// ✅ عرض كل النوبات (بدون حماية)
+//  عرض كل النوبات (بدون حماية)
 router.get("/", async (_req, res) => {
   try {
     const shifts = await prisma.shift.findMany({
@@ -50,7 +50,7 @@ router.get("/", async (_req, res) => {
   }
 });
 
-// ✅ تعديل نوبة (محمية – فقط مالك النوبة)
+//  تعديل نوبة (محمية – فقط مالك النوبة)
 router.put("/:id", requireAuth, async (req, res) => {
   try {
     const user = (req as any).user;
@@ -72,7 +72,7 @@ router.put("/:id", requireAuth, async (req, res) => {
   }
 });
 
-// ✅ حذف نوبة (محمية – فقط مالك النوبة)
+//  حذف نوبة (محمية – فقط مالك النوبة)
 router.delete("/:id", requireAuth, async (req, res) => {
   try {
     const user = (req as any).user;
@@ -87,6 +87,31 @@ router.delete("/:id", requireAuth, async (req, res) => {
     res.json({ message: "Shift deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Failed to delete shift" });
+  }
+});
+
+
+// Total hours for the logged-in guard
+
+
+router.get("/my/total-hours", requireAuth, async (req, res) => {
+  try {
+    const guardId = (req as any).user.id;
+
+    const shifts = await prisma.shift.findMany({
+      where: { guardId },
+    });
+
+    const totalHours = shifts.reduce((sum, s) => {
+      const start = parseInt(s.startTime.split(":")[0]);
+      const end = parseInt(s.endTime.split(":")[0]);
+      return sum + (end - start);
+    }, 0);
+
+    res.json({ totalHours });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to calculate total hours" });
   }
 });
 

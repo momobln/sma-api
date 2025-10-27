@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const router = Router();
 const prisma = new PrismaClient();
 
-// ✅ Register user
+// Register user هذا مسار POST على الرابط /api/auth/register&&يستقبل البيانات القادمة من العميل (req.body).
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ✅ Login user
+// Login user
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   console.log("Login attempt:", email, password);
@@ -32,8 +32,8 @@ router.post("/login", async (req, res) => {
 
     if (!guard) return res.status(400).json({ message: "User not found" });
 
-    // ✅ المقارنة الصحيحة هنا
-    const valid = await bcrypt.compare(password, guard.password);
+    //  المقارنة الصحيحة هنا
+    const valid = await bcrypt.compare(password, guard.password);//bcrypt.compare يفك التشفير آليًا للمقارنة دون كشف الكلمة الأصلية.
     console.log("Password valid?", valid);
 
     if (!valid) return res.status(400).json({ message: "Invalid credentials" });

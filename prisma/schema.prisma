@@ -27,7 +27,7 @@ model Shift {
   phone     String?
   createdAt DateTime @default(now())
 
-  guardId   Int?      // ← اختياري
+  guardId   Int?      //  اختياري
   guard     Guard?    @relation(fields: [guardId], references: [id])
 }
 

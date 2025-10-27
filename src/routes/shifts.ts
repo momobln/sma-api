@@ -42,7 +42,7 @@ router.get("/", async (_req, res) => {
   try {
     const shifts = await prisma.shift.findMany({
       include: { guard: { select: { id: true, name: true, email: true } } },
-      orderBy: { id: "desc" },
+      orderBy: { id: "desc" }, //يعرض الأحدث أولاً
     });
     res.json(shifts);
   } catch (error) {

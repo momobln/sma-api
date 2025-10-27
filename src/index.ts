@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.get("/health", (_req, res) => res.json({ ok: true }));
+app.get("/health", (_req, res) => res.json({ ok: true }));//فقط لتفادي تحذير TypeScript أو ESLint من “unused variable”.
 
 app.use("/api/auth", authRouter);
 app.use("/api/guards", guardsRouter);

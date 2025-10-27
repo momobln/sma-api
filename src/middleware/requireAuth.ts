@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";//NextFunction: دالة تستخدم لنقل التحكم للمرحلة التالية (middleware أو route)
 import jwt from "jsonwebtoken";
 
 export interface AuthRequest extends Request {

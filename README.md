@@ -22,7 +22,7 @@ cd sma-api
 **Install dependencies
 npm install
 
-3. Environment variables
+Environment variables
 
 **Create.env file in the project root:**
 
@@ -59,15 +59,13 @@ src/
 
   Method     Endpoint                       Description                    Protected  
 
-  TPOST      /api/shifts                      Create new shift                  Y          
-  TGETT      /api/shifts                      Get all shifts                    N          
-  TPUTT      /api/shifts/:id                  Update user’s own shift           Y          
-  TDELETET   /api/shifts/:id                  Delete user’s own shift           Y         
-  TGETT      /api/shifts/my/total-hours       Calculate total worked hours      Y
+  POST      /api/shifts                      Create new shift                  Y          
+  GET      /api/shifts                      Get all shifts                    N          
+  PUT      /api/shifts/:id                  Update user’s own shift           Y          
+  DELETE   /api/shifts/:id                  Delete user’s own shift           Y         
+  GET      /api/shifts/my/total-hours       Calculate total worked hours      Y
 
 
 ##Database Relations (Prisma Schema)
-Guard → has many Shifts
-Shift → belongs to one Guard 
-
-
+Guard => has many Shifts
+Shift => belongs to one Guard 
